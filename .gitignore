@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Data cache
+data/*.json
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vi/Vim
+*.swp
+*.swo
+*~

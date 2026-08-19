@@ -1,0 +1,29 @@
+{
+  "name": "WAC",
+  "version": "1.1.0",
+  "description": "A web UI for calculating affix probability combinations in Windblown.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "fetch-data": "node scripts/fetch-wiki-data.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/not-ngl/Affixes-odds-calculator.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/not-ngl/Affixes-odds-calculator/issues"
+  },
+  "homepage": "https://github.com/not-ngl/Affixes-odds-calculator#readme",
+  "dependencies": {
+    "luaparse": "^0.3.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
