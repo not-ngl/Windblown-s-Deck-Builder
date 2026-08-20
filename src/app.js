@@ -173,6 +173,24 @@ function toggleItem(category, itemKey) {
     updateDeckSummary();
 }
 
+function filterItems(category, searchTerm) {
+    const term = searchTerm.toLowerCase().trim();
+    const grid = document.getElementById(`grid-${category}`);
+    if (!grid) return;
+
+    const cards = grid.querySelectorAll('.item-card');
+
+    cards.forEach(card => {
+        const name = card.dataset.name || '';
+
+        if (term === '' || name.includes(term) ) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
 function isSelected(category, itemKey) {
     return appState.selected[category]?.has(itemKey) || false;
 }
@@ -248,11 +266,6 @@ function createCard(category, item) {
     }
 
     card.appendChild(iconWrap);
-
-    const check = document.createElement('div');
-    check.className = 'check-mark';
-    check.textContent = '\u2713';
-    card.appendChild(check);
 
     // Keep minimal info or remove entirely
     const info = document.createElement('div');

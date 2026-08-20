@@ -137,33 +137,11 @@ main {
     height: 108px;
     object-fit: scale-down;
     transition: filter 0.15s;
+    pointer-events: none;
 }
 
 .item-card:not(.selected) .item-icon-wrapper img {
     filter: grayscale(100%) brightness(0.85);
-}
-
-.check-mark {
-    position: absolute;
-    top: 0.25rem;
-    right: 0.25rem;
-    width: 22px;
-    height: 22px;
-    background: #6d4aff;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-    opacity: 0;
-    transform: scale(0.7);
-    transition: all 0.15s;
-}
-
-.item-card.selected .check-mark {
-    opacity: 1;
-    transform: scale(1);
 }
 
 /* Hide item-info completely */
@@ -303,6 +281,7 @@ main {
     width: 44px;
     height: 44px;
     object-fit: contain;
+    pointer-events: none;
 }
 
 .deck-item .close-overlay {
