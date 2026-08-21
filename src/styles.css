@@ -8,7 +8,10 @@ body {
     padding: 0;
     background: #f8f8f8;
     color: #333;
+    padding-bottom: 120px;
 }
+
+/* === HEADER === */
 
 header {
     background: #fff;
@@ -30,25 +33,7 @@ header h1 {
     font-size: 0.8rem;
 }
 
-#tabs {
-    display: flex;
-    gap: 0;
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    padding: 0 1rem;
-}
-
-.tab-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    filter: grayscale(100%) brightness(0.85);
-    transition: filter 0.15s;
-}
-
-.tab-btn.active .tab-icon {
-    filter: grayscale(100%) brightness(0.5);
-}
+/* === TABS === */
 
 .tabs-wrapper {
     display: flex;
@@ -58,17 +43,6 @@ header h1 {
     border: 1px solid #ddd;
     border-bottom: none;
     margin-bottom: -1px;
-}
-
-.category-panel {
-    display: none;
-    border: 1px solid #ddd;
-    background: #fff;
-    padding: 1rem;
-}
-
-.category-panel.active {
-    display: block;
 }
 
 .tab-btn {
@@ -104,6 +78,20 @@ header h1 {
     font-weight: 600;
 }
 
+.tab-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(0.85);
+    transition: filter 0.15s;
+}
+
+.tab-btn.active .tab-icon {
+    filter: grayscale(100%) brightness(0.5);
+}
+
+/* === MAIN LAYOUT === */
+
 main {
     display: grid;
     grid-template-columns: 1fr 650px;
@@ -113,8 +101,13 @@ main {
     margin: 0 auto;
 }
 
+/* === CATEGORY PANELS === */
+
 .category-panel {
     display: none;
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 1rem;
 }
 
 .category-panel.active {
@@ -131,11 +124,7 @@ main {
     grid-column: 1 / -1;
 }
 
-.item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-    gap: 1ex;
-}
+/* === SEARCH BOX === */
 
 .search-box {
     margin-bottom: 1rem;
@@ -151,6 +140,14 @@ main {
 .search-box input:focus {
     outline: none;
     border-color: #6d4aff;
+}
+
+/* === ITEM GRID === */
+
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+    gap: 1ex;
 }
 
 .item-card {
@@ -172,7 +169,7 @@ main {
     z-index: 0;
     filter: grayscale();
     transition: 0.15s;
-    scale:0.92;
+    scale: 0.92;
 }
 
 .item-card[data-category="weapons"]::before {
@@ -272,37 +269,7 @@ main {
     margin-bottom: 0.3rem;
 }
 
-.item-description {
-    font-size: 0.7rem;
-    color: #888;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.item-description br {
-}
-
-.item-description b, .item-description strong {
-    font-weight: 600;
-    color: #666;
-}
-
-.item-description i {
-    font-style: italic;
-}
-
-.item-meta {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid #eee;
-    font-size: 0.7rem;
-    color: #999;
-}
+/* === DECK SUMMARY SIDEBAR === */
 
 #deck-summary {
     background: #fff;
@@ -357,25 +324,6 @@ main {
     pointer-events: none;
 }
 
-.deck-item .close-overlay {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 14px;
-    height: 14px;
-    background: #c00;
-    color: white;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-.deck-item:hover .close-overlay {
-    display: flex;
-}
-
 .global-total {
     font-size: 0.8rem;
     font-weight: 600;
@@ -421,6 +369,316 @@ main {
     background: #fcfaff;
 }
 
+/* === CURRENT BUILD SECTION === */
+
+#current-build-section {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 2px solid #6d4aff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: transform 0.3s ease-out;
+}
+
+#current-build-section.build-collapsed {
+    transform: translateY(calc(100% - 44px));
+}
+
+#current-build-section.build-expanded {
+    transform: translateY(0);
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.build-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    background: #f5f5f5;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.build-toggle-btn {
+    background: #6d4aff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.build-toggle-btn:hover {
+    background: #5a3dd9;
+}
+
+.build-arrow {
+    transition: transform 0.25s;
+}
+
+.build-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6d4aff;
+}
+
+/* === ENDLESS TOGGLE SWITCH === */
+
+.endless-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: all 0.15s;
+}
+
+.endless-toggle:hover {
+    background: #eaeaea;
+}
+
+.endless-toggle input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #6d4aff;
+    cursor: pointer;
+}
+
+.endless-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.endless-toggle input:checked + .endless-label {
+    color: #6d4aff;
+}
+
+/* === BUILD SLOTS WRAPPER === */
+
+.build-slots-wrapper {
+    overflow-y: auto;
+    max-height: calc(50vh - 44px);
+}
+
+.build-slots-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    justify-content: center;
+}
+
+/* === NORMAL MODE (HORIZONTAL ALL IN ONE ROW) === */
+
+#current-build-section:not(.build-endless) .build-slots-container {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#current-build-section:not(.build-endless) .build-box-left,
+#current-build-section:not(.build-endless) .build-box-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+#current-build-section:not(.build-endless) .build-category-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+#current-build-section:not(.build-endless) .build-category-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6d4aff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#current-build-section:not(.build-endless) .build-category {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* === ENDLESS MODE (2 BOXES SIDE BY SIDE) === */
+
+#current-build-section.build-endless .build-slots-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+#current-build-section.build-endless .build-box-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+#current-build-section.build-endless .build-box-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#current-build-section.build-endless .build-category-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#current-build-section.build-endless .build-category-title {
+    min-width: 70px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6d4aff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: right;
+}
+
+#current-build-section.build-endless .build-category {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+#current-build-section.build-endless #build-weapons,
+#current-build-section.build-endless #build-trinkets,
+#current-build-section.build-endless #build-magifishes,
+#current-build-section.build-endless #build-backpack,
+#current-build-section.build-endless #build-hexes {
+    display: flex;
+    gap: 0.35rem;
+}
+
+#current-build-section.build-endless #build-gifts {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    grid-template-rows: repeat(3, auto);
+    gap: 0.35rem;
+}
+
+/* === BUILD SLOT STYLES === */
+
+.build-category-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.build-category-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6d4aff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.build-category {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.build-slot {
+    width: 52px;
+    height: 52px;
+    background: #f0f0f0;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.build-slot:hover:not(.filled) {
+    border-color: #6d4aff;
+    background: #faf0ff;
+}
+
+.build-slot.filled {
+    background: #fff;
+    border: 2px solid #6d4aff;
+}
+
+.build-slot img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.build-slot .slot-num {
+    font-size: 0.75rem;
+    color: #999;
+    font-weight: 600;
+}
+
+.build-slot.filled .slot-num {
+    display: none;
+}
+
+.remove-slot-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    background: #c00;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 16px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 2;
+}
+
+.build-slot.filled:hover .remove-slot-btn {
+    opacity: 1;
+}
+
+/* Hex-specific styling */
+#build-hexes .build-slot {
+    border-color: #a055ff;
+}
+
+#build-hexes .build-slot.filled {
+    border-color: #6d4aff;
+}
+
+#build-hexes .build-slot:hover:not(.filled) {
+    border-color: #a055ff;
+    background: #faf0ff;
+}
+
+/* === RESPONSIVE === */
+
 @media (max-width: 900px) {
     main {
         grid-template-columns: 1fr;
@@ -439,9 +697,10 @@ main {
     }
     
     .item-grid {
-    	grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
-    	gap: 0ex;
+        grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+        gap: 0ex;
     }
+    
     .item-icon-wrapper img {
         width: 48px;
         height: 48px;
@@ -454,6 +713,50 @@ main {
     }
 
     .tab-btn {
+        gap: 0.2rem;
+    }
+    
+    #current-build-section.build-collapsed {
+        transform: translateY(calc(100% - 38px));
+    }
+    
+    .build-toggle-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+    
+    .build-slot {
+        width: 46px;
+        height: 46px;
+    }
+    
+    .build-slot img {
+        width: 38px;
+        height: 38px;
+    }
+    
+    body {
+        padding-bottom: 100px;
+    }
+    
+    /* Endless mode on mobile */
+    #current-build-section.build-endless .build-slot {
+        width: 40px;
+        height: 40px;
+    }
+    
+    #current-build-section.build-endless .build-slot img {
+        width: 34px;
+        height: 34px;
+    }
+    
+    #current-build-section.build-endless .build-category-title {
+        min-width: 55px;
+        font-size: 0.65rem;
+    }
+    
+    #current-build-section.build-endless #build-gifts {
+        grid-template-columns: repeat(6, auto);
         gap: 0.2rem;
     }
 }
