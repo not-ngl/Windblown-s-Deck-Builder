@@ -321,32 +321,47 @@ function updateDeckSummary() {
     let total = 0;
     let valid = true;
     const selectedItemList = [];
-    
+
     Object.keys(CONFIG.categories).forEach(cat => {
         const count = appState.selected[cat]?.size || 0;
         const config = CONFIG.categories[cat];
         total += count;
-        
-        // Update tab info (min/total)
-        if (elements.tabInfos?.[cat]) {
-            elements.tabInfos[cat].textContent = `${count}/${config.min}`;
+
+        const tabBtn = document.querySelector(`button[data-tab="${cat}"]`);
+        if (tabBtn) {
+            tabBtn.classList.toggle('valid', count >= config.min);
+            tabBtn.querySelector('.tab-info').textContent = `${count}/${config.min}`;
         }
-        
+
         if (count < config.min) valid = false;
-        
-        // Collect selected items for the deck grid
+
+        const catItems = [];
         appState.selected[cat]?.forEach(key => {
             const item = categoryData[cat].find(i => i.key === key);
             if (item) {
-                selectedItemList.push({ ...item, category: cat });
+                catItems.push({ ...item, category: cat });
             }
         });
+
+        if (cat === 'gifts') {
+            catItems.sort((a, b) => {
+                const typeA = a.raw?.Type || 'Uncategorized';
+                const typeB = b.raw?.Type || 'Uncategorized';
+                if (typeA === 'General' && typeB !== 'General') return -1;
+                if (typeB === 'General' && typeA !== 'General') return 1;
+                if (typeA !== typeB) return typeA.localeCompare(typeB);
+                return a.name.localeCompare(b.name);
+            });
+        } else {
+            catItems.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        selectedItemList.push(...catItems);
     });
-    
+
     elements.globalTotal.textContent = `${total}/${CONFIG.globalMinTotal} minimum`;
     elements.globalTotal.className = total >= CONFIG.globalMinTotal ? 'global-total valid' : 'global-total error';
-    
-    // Render deck grid with only icons
+
     renderDeckGrid(selectedItemList);
 }
 

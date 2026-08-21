@@ -38,28 +38,64 @@ header h1 {
     padding: 0 1rem;
 }
 
+.tab-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(0.85);
+    transition: filter 0.15s;
+}
+
+.tab-btn.active .tab-icon {
+    filter: grayscale(100%) brightness(0.5);
+}
+
+.tabs-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    background: #eee;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    margin-bottom: -1px;
+}
+
+.category-panel {
+    display: none;
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 1rem;
+}
+
+.category-panel.active {
+    display: block;
+}
+
 .tab-btn {
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 0.75rem;
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #666;
     border-bottom: 2px solid transparent;
     transition: all 0.15s;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-}
-
-.tab-btn:hover {
-    background: #e8e8e8;
+    gap: 0.4rem;
+    white-space: nowrap;
+    flex: 1;
+    justify-content: center;
 }
 
 .tab-btn.active {
     color: #000;
     border-bottom-color: #6d4aff;
     background: #fff;
+}
+
+.tab-btn:not(.valid) .tab-info {
+    color: #c00;
 }
 
 .tab-info {
@@ -70,7 +106,7 @@ header h1 {
 
 main {
     display: grid;
-    grid-template-columns: 1fr 450px;
+    grid-template-columns: 1fr 650px;
     gap: 1rem;
     padding: 1.5rem;
     max-width: 1800px;
@@ -135,6 +171,8 @@ main {
     pointer-events: none;
     z-index: 0;
     filter: grayscale();
+    transition: 0.15s;
+    scale:0.92;
 }
 
 .item-card[data-category="weapons"]::before {
@@ -154,6 +192,7 @@ main {
 .item-card.selected::before {
     opacity: 1.0;
     filter: none;
+    scale: 0.95;
 }
 
 .item-card:hover {
@@ -183,49 +222,10 @@ main {
     filter: grayscale(100%) brightness(0.85);
 }
 
-/*.item-card {
-    background: #fff;
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
-}
-
-.item-card:hover {
-    border-color: #bbb;
-}
-
-.item-card.selected {
-    border-color: #6d4aff;
-    background: #fcfcff;
-}
-
-.item-icon-wrapper {
-    width: 100%;
-    aspect-ratio: 1;
-    background: #fafafa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.item-icon-wrapper img {
-    width: 108px;
-    height: 108px;
-    object-fit: scale-down;
-    transition: filter 0.15s;
-    pointer-events: none;
-}
-
-.item-card:not(.selected) .item-icon-wrapper img {
-    filter: grayscale(100%) brightness(0.85);
-}*/
-
-/* Hide item-info completely */
 .item-info {
     display: none;
 }
 
-/* Full tooltip on hover */
 .item-tooltip {
     position: absolute;
     transform: translate(80%, 0%);
@@ -257,7 +257,6 @@ main {
     word-break: break-word;
 }
 
-/* Scale up the icon wrapper on hover to accommodate tooltip */
 .item-icon-wrapper:hover {
     z-index: 15;
 }
@@ -265,7 +264,6 @@ main {
 .item-icon-wrapper:hover .item-tooltip {
     opacity: 1;
     visibility: visible;
-    /*transform: translate(-50%, -50%) scale(1);*/
 }
 
 .item-name {
@@ -285,7 +283,6 @@ main {
 }
 
 .item-description br {
-    /* Line breaks will render naturally */
 }
 
 .item-description b, .item-description strong {
@@ -448,5 +445,15 @@ main {
     .item-icon-wrapper img {
         width: 48px;
         height: 48px;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 1));
+    }
+
+    .tab-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .tab-btn {
+        gap: 0.2rem;
     }
 }

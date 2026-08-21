@@ -12,16 +12,32 @@
         <p class="subtitle">Curate your item pool</p>
     </header>
 
-    <nav id="tabs">
-        <button class="tab-btn active" data-tab="weapons">Weapons <span class="tab-info" id="tab-info-weapons">8/28</span></button>
-        <button class="tab-btn" data-tab="trinkets">Trinkets <span class="tab-info" id="tab-info-trinkets">8/25</span></button>
-        <button class="tab-btn" data-tab="magifishes">Magifishes <span class="tab-info" id="tab-info-magifishes">2/3</span></button>
-        <button class="tab-btn" data-tab="gifts">Gifts <span class="tab-info" id="tab-info-gifts">35/135</span></button>
-        <button class="tab-btn" data-tab="hexes">Hexes <span class="tab-info" id="tab-info-hexes">8/20</span></button>
-    </nav>
 
     <main>
         <section class="categories-container">
+            <nav id="tabs-wrapper" class="tabs-wrapper">
+                <button class="tab-btn active" data-tab="weapons">
+                    <img src="https://windblown.wiki.gg/images/Weapons_Icon.png?format=original" alt="" class="tab-icon">
+                    <span class="tab-info" id="tab-info-weapons">8/28</span>
+                </button>
+                <button class="tab-btn" data-tab="trinkets">
+                    <img src="https://windblown.wiki.gg/images/Trinkets_Icon.png?format=original" alt="" class="tab-icon">
+                    <span class="tab-info" id="tab-info-trinkets">8/25</span>
+                </button>
+                <button class="tab-btn" data-tab="magifishes">
+                    <img src="https://windblown.wiki.gg/images/Magifishes_Icon.png?format=original" alt="" class="tab-icon">
+                    <span class="tab-info" id="tab-info-magifishes">2/3</span>
+                </button>
+                <button class="tab-btn" data-tab="gifts">
+                    <img src="https://windblown.wiki.gg/images/Gifts_Icon.png?format=original" alt="" class="tab-icon">
+                    <span class="tab-info" id="tab-info-gifts">35/135</span>
+                </button>
+                <button class="tab-btn" data-tab="hexes">
+                    <img src="https://windblown.wiki.gg/images/Hexes_Icon.png?format=original" alt="" class="tab-icon">
+                    <span class="tab-info" id="tab-info-hexes">8/20</span>
+                </button>
+            </nav>
+
             <section id="weapons" class="category-panel active"></section>
             <section id="trinkets" class="category-panel"></section>
             <section id="magifishes" class="category-panel"></section>
