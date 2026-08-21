@@ -1,7 +1,7 @@
 {
-  "name": "WAC",
-  "version": "1.1.0",
-  "description": "A web UI for calculating affix probability combinations in Windblown.",
+  "name": "WDB",
+  "version": "0.9.0",
+  "description": "A web UI for crafting decks.",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/not-ngl/Affixes-odds-calculator.git"
+    "url": "git+https://github.com/not-ngl/Windblown-s-Deck-Builder.git"
   },
   "keywords": [],
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/not-ngl/Affixes-odds-calculator/issues"
+    "url": "https://github.com/not-ngl/Windblown-s-Deck-Builder/issues"
   },
-  "homepage": "https://github.com/not-ngl/Affixes-odds-calculator#readme",
+  "homepage": "https://github.com/not-ngl/Windblown-s-Deck-Builder#readme",
   "dependencies": {
     "luaparse": "^0.3.1",
     "node-fetch": "^3.3.2"
