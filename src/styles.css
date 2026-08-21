@@ -3,6 +3,7 @@
 
 /* === THEME VARIABLES === */
 :root {
+    /* Colors */
     --theme-body-background: #343B4C;
     --theme-content-background: #0B0B28;
     --theme-content-background-secondary: #1A0B28;
@@ -14,15 +15,18 @@
     --theme-accent: #cc33ba;
     --theme-accent-hover: #f544e6;
     --theme-accent-label: #fff;
-    --wiki-body-background-image: url("https://windblown.wiki.gg/images/Site-background-3.jpg?51ba32");
     
     /* RGB for rgba() usage */
     --theme-content-bg-rgb: 11, 11, 40;
+    
+    /* Backgrounds */
+    --wiki-body-background-image: url("https://windblown.wiki.gg/images/Site-background-3.jpg?51ba32");
     
     /* Typography */
     --theme-font-family: 'Sofia Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* === RESET & BASE === */
 * {
     box-sizing: border-box;
 }
@@ -38,6 +42,17 @@ body {
     padding: 0;
 }
 
+/* === LAYOUT === */
+main {
+    display: grid;
+    margin: 25px auto;
+    grid-template-columns: 1fr 650px;
+    gap: 1rem;
+    padding: 1.5rem;
+    max-width: 1800px;
+}
+
+/* === FIXED HEADER === */
 .fixed-header {
     position: fixed;
     top: 0;
@@ -54,16 +69,13 @@ body {
     padding: 0 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    font-family: var(--theme-font-family);
 }
 
 .logo-container {
     text-align: center;
-    font-family: var(--theme-font-family);
 }
 
 /* === TABS === */
-
 .tabs-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -89,7 +101,6 @@ body {
     white-space: nowrap;
     flex: 1;
     justify-content: center;
-    font-family: var(--theme-font-family);
 }
 
 .tab-btn.active {
@@ -106,7 +117,6 @@ body {
     font-size: 0.75rem;
     color: var(--theme-accent);
     font-weight: 600;
-    font-family: var(--theme-font-family);
 }
 
 .tab-icon {
@@ -121,19 +131,7 @@ body {
     filter: brightness(0.85);
 }
 
-/* === MAIN LAYOUT === */
-
-main {
-    display: grid;
-    margin: 25px auto;
-    grid-template-columns: 1fr 650px;
-    gap: 1rem;
-    padding: 1.5rem;
-    max-width: 1800px;
-}
-
 /* === CATEGORY PANELS === */
-
 .category-panel {
     display: none;
     border: 1px solid var(--theme-content-border);
@@ -142,7 +140,6 @@ main {
     max-height: calc(100vh - 265px);  
     overflow-y: auto;
     position: relative;
-    font-family: var(--theme-font-family);
 }
 
 .category-panel.active {
@@ -156,10 +153,9 @@ main {
     border-bottom: 1px solid var(--theme-accent);
     padding: 0.5rem 0.5rem;
     grid-column: 1 / -1;
-    font-family: var(--theme-font-family);
 }
 
-/* Sticky search box within panel */
+/* === SEARCH BOX === */
 .search-box {
     position: sticky;
     top: 0;
@@ -173,7 +169,6 @@ main {
     border: 1px solid var(--theme-content-border);
     font-size: 0.9rem;
     border-radius: 4px;
-    font-family: var(--theme-font-family);
 }
 
 .search-box input:focus {
@@ -181,7 +176,7 @@ main {
     border-color: var(--theme-accent);
 }
 
-/* Item grid fills remaining space */
+/* === ITEM GRID & CARDS === */
 .item-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
@@ -281,7 +276,6 @@ main {
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     white-space: normal;
     overflow-wrap: break-word;
-    font-family: var(--theme-font-family);
 }
 
 .item-icon-wrapper:hover .item-tooltip {
@@ -294,31 +288,26 @@ main {
     margin-bottom: 0.35rem;
     color: var(--theme-accent);
     font-size: 0.85rem;
-    font-family: var(--theme-font-family);
 }
 
 .item-tooltip .tooltip-desc {
     color: #eee;
     word-break: break-word;
-    font-family: var(--theme-font-family);
 }
 
 .item-name {
     font-weight: 600;
     font-size: 0.85rem;
     margin-bottom: 0.3rem;
-    font-family: var(--theme-font-family);
 }
 
 /* === DECK SUMMARY SIDEBAR === */
-
 #deck-summary {
     background: var(--theme-content-background);
     border: 1px solid var(--theme-content-border);
     padding: 1rem;
     position: sticky;
     top: 80px;
-    font-family: var(--theme-font-family);
 }
 
 #deck-summary h2 {
@@ -326,7 +315,6 @@ main {
     font-size: 0.9rem;
     border-bottom: 1px solid var(--theme-content-background-secondary);
     padding-bottom: 0.5rem;
-    font-family: var(--theme-font-family);
 }
 
 .deck-grid {
@@ -367,6 +355,16 @@ main {
     pointer-events: none;
 }
 
+.deck-item.ineligible {
+    filter: grayscale(100%) brightness(0.6);
+    opacity: 0.6;
+}
+
+.deck-item.ineligible:hover {
+    filter: grayscale(100%) brightness(0.7);
+    opacity: 0.7;
+}
+
 .global-total {
     font-size: 0.8rem;
     font-weight: 600;
@@ -374,7 +372,6 @@ main {
     background: var(--theme-content-background-secondary);
     text-align: center;
     margin-bottom: 0.75rem;
-    font-family: var(--theme-font-family);
 }
 
 .global-total.error {
@@ -401,7 +398,6 @@ main {
     cursor: pointer;
     font-size: 0.8rem;
     transition: background 0.15s;
-    font-family: var(--theme-font-family);
 }
 
 .actions button:hover {
@@ -415,7 +411,6 @@ main {
 }
 
 /* === CURRENT BUILD SECTION === */
-
 #current-build-section {
     position: fixed;
     bottom: 0;
@@ -427,7 +422,6 @@ main {
     border-top: 2px solid var(--theme-accent);
     z-index: 1000;
     transition: transform 0.3s ease-out;
-    font-family: var(--theme-font-family);
 }
 
 #current-build-section.build-collapsed {
@@ -460,7 +454,6 @@ main {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--theme-font-family);
 }
 
 .build-toggle-btn:hover {
@@ -475,11 +468,22 @@ main {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--theme-accent);
-    font-family: var(--theme-font-family);
 }
 
-/* === ENDLESS TOGGLE SWITCH === */
+.build-slots-wrapper {
+    overflow-y: auto;
+    max-height: calc(50vh - 44px);
+}
 
+.build-slots-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    justify-content: center;
+}
+
+/* === ENDLESS MODE STYLES === */
 .endless-toggle {
     display: flex;
     align-items: center;
@@ -505,30 +509,21 @@ main {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--theme-content-text-muted);
-    font-family: var(--theme-font-family);
 }
 
 .endless-toggle input:checked + .endless-label {
     color: var(--theme-accent);
 }
 
-/* === BUILD SLOTS WRAPPER === */
-
-.build-slots-wrapper {
-    overflow-y: auto;
-    max-height: calc(50vh - 44px);
+body.endless-mode-active {
+    padding-bottom: 240px; 
 }
 
-.build-slots-container {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    justify-content: center;
+body:not(.endless-mode-active) {
+    padding-bottom: 120px;  
 }
 
-/* === NORMAL MODE === */
-
+/* Normal mode layout */
 #current-build-section:not(.build-endless) .build-slots-container {
     display: flex;
     flex-wrap: wrap;
@@ -548,8 +543,7 @@ main {
     gap: 0.25rem;
 }
 
-/* === ENDLESS MODE === */
-
+/* Endless mode layout */
 #current-build-section.build-endless .build-slots-container {
     display: flex;
     flex-direction: row;
@@ -593,8 +587,7 @@ main {
     gap: 0.35rem;
 }
 
-/* === BUILD SLOT STYLES === */
-
+/* === BUILD SLOTS === */
 .build-category-group {
     display: flex;
     flex-direction: column;
@@ -608,7 +601,6 @@ main {
     color: var(--theme-content-heading);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-family: var(--theme-font-family);
 }
 
 .build-category {
@@ -616,7 +608,6 @@ main {
     gap: 0.25rem;
 }
 
-/* Base slot styling */
 .build-slot {
     width: 52px;
     height: 52px;
@@ -628,52 +619,44 @@ main {
     justify-content: center;
 }
 
-/* === WEAPON SLOTS === */
-
+/* Weapon slots */
 .build-slot[data-slot-type="weapon"] {
     background: none;
     border: 2px solid #fff;
     border-radius: 0;
 }
 
-/* Weapon slot 1 */
 .build-slot[data-slot-type="weapon"][data-index="0"] {
     border-radius: 8px 0 0 8px;
 }
 
-/* Weapon slot 2 */
 .build-slot[data-slot-type="weapon"][data-index="1"] {
     border-radius: 0 8px 8px 0;
 }
 
-/* === TRINKET SLOTS === */
-
+/* Trinket slots */
 .build-slot[data-slot-type="trinket"] {
     background: none;
     border: 2px solid #fff;
     border-radius: 0;
 }
 
-/* Trinket slot 1 */
 .build-slot[data-slot-type="trinket"][data-index="0"] {
     border-radius: 8px 0 0 8px;
 }
 
-/* Trinket slot 2 */
 .build-slot[data-slot-type="trinket"][data-index="1"] {
     border-radius: 0 8px 8px 0;
 }
 
-/* === MAGIFISH SLOT === */
-
+/* Magifish slot */
 .build-slot[data-slot-type="magifish"] {
     background: none;
     border: 2px solid #fff;
     border-radius: 8px;
 }
 
-/* === BACKPACK SLOT === */
-
+/* Backpack slot */
 .build-slot[data-slot-type="backpack"] {
     background: none;
     border: none;
@@ -720,8 +703,7 @@ main {
     pointer-events: none;
 }
 
-/* === HEX SLOT === */
-
+/* Hex slot */
 .build-slot[data-slot-type="hex"] {
     background-image: url('../src/assets/HexIconBackground.png');
     background-size: contain;
@@ -732,8 +714,7 @@ main {
     border-radius: 0;
 }
 
-/* === GIFT SLOT === */
-
+/* Gift slot */
 .build-slot[data-slot-type="gift"] {
     background-image: url('../src/assets/GiftIconBackground.png');
     background-size: contain;
@@ -743,8 +724,7 @@ main {
     border-radius: 0;
 }
 
-/* === FILLED SLOTS === */
-
+/* Filled slots */
 .build-slot.filled img {
     position: absolute;
     top: 50%;
@@ -757,13 +737,9 @@ main {
     pointer-events: none;
 }
 
-/* === SLOT NUMBER === */
-
 .build-slot .slot-num {
     display: none;
 }
-
-/* === REMOVE BUTTON === */
 
 .remove-slot-btn {
     position: absolute;
@@ -781,160 +757,9 @@ main {
     line-height: 16px;
     z-index: 20;
     pointer-events: auto;
-    font-family: var(--theme-font-family);
 }
 
-/* === RESPONSIVE ADJUSTMENTS === */
-
-@media (max-width: 900px) {
-    main {
-        padding: 0.5rem;
-        gap: 0.5rem;
-    }
-
-    .item-icon-wrapper {
-        width: 62px;
-    }
-
-    .item-card::before {
-        width: 62px;
-    }
-
-    .build-slot {
-        width: 46px;
-        height: 46px;
-    }
-
-    .build-slot[data-slot-type="hex"] {
-        background-size:60px;
-    }
-
-    .build-slot img {
-        width: 38px;
-        height: 38px;
-    }
-
-    .build-slot[data-slot-type="backpack"]::before,
-    .build-slot[data-slot-type="backpack"]::after {
-        background-size: contain;
-    }
-
-    #current-build-section.build-endless .build-slot {
-        width: 40px;
-        height: 40px;
-    }
-
-    #current-build-section.build-endless .build-slot img {
-        width: 34px;
-        height: 34px;
-    }
-}
-
-/* === RESPONSIVE === */
-
-@media (max-width: 1360px) {
-    main {
-        grid-template-columns: 1fr;
-    }
-    
-    #deck-summary {
-        position: static;
-        order: -1;
-    }
-}
-
-/* === ENDLESS MODE BODY MARGIN === */
-
-body.endless-mode-active {
-    padding-bottom: 240px; 
-}
-
-body:not(.endless-mode-active) {
-    padding-bottom: 120px;  
-}
-
-@media (max-width: 900px) {
-    body.endless-mode-active {
-        padding-bottom: 200px;
-    }
-
-    body:not(.endless-mode-active) {
-        padding-bottom: 100px;
-    }
-}
-
-@media (max-width: 900px) {
-    #tabs {
-        overflow-x: auto;
-        padding: 0 0.5rem;
-    }
-    
-    .item-grid {
-        grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
-        gap: 0ex;
-    }
-    
-    .item-icon-wrapper img {
-        width: 48px;
-        height: 48px;
-        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 1));
-    }
-
-    .tab-icon {
-        width: 18px;
-        height: 18px;
-    }
-
-    .tab-btn {
-        gap: 0.2rem;
-    }
-    
-    #current-build-section.build-collapsed {
-        transform: translateY(calc(100% - 38px));
-    }
-    
-    .build-toggle-btn {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.75rem;
-    }
-    
-    .build-slot {
-        width: 46px;
-        height: 46px;
-    }
-    
-    .build-slot img {
-        width: 38px;
-        height: 38px;
-    }
-    
-    body {
-        padding-bottom: 100px;
-    }
-    
-    #current-build-section.build-endless .build-slot {
-        width: 40px;
-        height: 40px;
-    }
-    
-    #current-build-section.build-endless .build-slot img {
-        width: 34px;
-        height: 34px;
-    }
-    
-    #current-build-section.build-endless .build-category-title {
-        min-width: 55px;
-        font-size: 0.65rem;
-    }
-    
-    #current-build-section.build-endless #build-gifts {
-        grid-template-columns: repeat(6, auto);
-        gap: 0.2rem;
-    }
-}
-
-/* === CHRYSALIS  === */
-
+/* === CHRYSALIS BONUS === */
 .chrysalis-bonus {
     display: flex;
     align-items: center;
@@ -964,12 +789,18 @@ body:not(.endless-mode-active) {
     border-color: #10b981;
 }
 
+.chrysalis-bonus input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--theme-accent);
+}
+
 .bonus-label {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--theme-content-text-muted);
     transition: color 0.15s;
-    font-family: var(--theme-font-family);
 }
 
 .chrysalis-bonus.enabled .bonus-label {
@@ -991,7 +822,6 @@ body:not(.endless-mode-active) {
     gap: 0.35rem;
 }
 
-/* Bonus gift slot styling (slots 7-12 or 19-24) */
 #build-gifts .build-slot.bonus-slot {
     border-style: solid;
     border-color: #a855f7;
@@ -1003,30 +833,7 @@ body:not(.endless-mode-active) {
     background: var(--theme-content-background);
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .chrysalis-bonus {
-        padding: 0.2rem 0.5rem;
-    }
-
-    .bonus-label {
-        font-size: 0.65rem;
-    }
-}
-
-/* Eligibility */
-.deck-item.ineligible {
-    filter: grayscale(100%) brightness(0.6);
-    opacity: 0.6;
-}
-
-.deck-item.ineligible:hover {
-    filter: grayscale(100%) brightness(0.7);
-    opacity: 0.7;
-}
-
-
-/* Import Button - Purple Fill */
+/* === BUTTONS === */
 #btn-import {
     border-color: var(--theme-accent);
     color: var(--theme-accent-label);
@@ -1037,7 +844,6 @@ body:not(.endless-mode-active) {
     background: var(--theme-accent-hover);
 }
 
-/* Reset Button - Red Fill */
 #btn-reset {
     border-color: #c00;
     color: var(--theme-accent-label);
@@ -1055,10 +861,136 @@ body:not(.endless-mode-active) {
     line-height: 1.3;
     color: var(--theme-content-text-muted);
     text-align: center;
-    font-family: var(--theme-font-family);
 }
 
 .sidebar-copyright a {
     color: var(--theme-content-link);
-    font-family: var(--theme-font-family);
+}
+
+/* === MEDIA QUERIES (CONSOLIDATED) === */
+
+/* Tablet view */
+@media (max-width: 1360px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+    
+    #deck-summary {
+        position: static;
+        order: -1;
+    }
+}
+
+/* Mobile view */
+@media (max-width: 900px) {
+    /* Layout */
+    main {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    body {
+        padding-bottom: 100px;
+    }
+
+    body.endless-mode-active {
+        padding-bottom: 200px;
+    }
+
+    body:not(.endless-mode-active) {
+        padding-bottom: 100px;
+    }
+
+    /* Tabs */
+    #tabs {
+        overflow-x: auto;
+        padding: 0 0.5rem;
+    }
+
+    .tab-btn {
+        gap: 0.2rem;
+    }
+
+    .tab-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Items */
+    .item-grid {
+        grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+        gap: 0ex;
+    }
+
+    .item-icon-wrapper {
+        width: 62px;
+    }
+
+    .item-card::before {
+        width: 62px;
+    }
+
+    .item-icon-wrapper img {
+        width: 48px;
+        height: 48px;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 1));
+    }
+
+    /* Build section */
+    #current-build-section.build-collapsed {
+        transform: translateY(calc(100% - 38px));
+    }
+
+    .build-toggle-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+
+    .build-slot {
+        width: 46px;
+        height: 46px;
+    }
+
+    .build-slot img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .build-slot[data-slot-type="hex"] {
+        background-size: 60px;
+    }
+
+    .build-slot[data-slot-type="backpack"]::before,
+    .build-slot[data-slot-type="backpack"]::after {
+        background-size: contain;
+    }
+
+    #current-build-section.build-endless .build-slot {
+        width: 40px;
+        height: 40px;
+    }
+
+    #current-build-section.build-endless .build-slot img {
+        width: 34px;
+        height: 34px;
+    }
+
+    #current-build-section.build-endless .build-category-title {
+        min-width: 55px;
+        font-size: 0.65rem;
+    }
+
+    #current-build-section.build-endless #build-gifts {
+        grid-template-columns: repeat(6, auto);
+        gap: 0.2rem;
+    }
+
+    /* Chrysalis bonus */
+    .chrysalis-bonus {
+        padding: 0.2rem 0.5rem;
+    }
+
+    .bonus-label {
+        font-size: 0.65rem;
+    }
 }
