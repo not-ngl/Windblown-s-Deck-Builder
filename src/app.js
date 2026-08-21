@@ -8,7 +8,8 @@ const CONFIG = {
         hexes: { label: 'Hexes', total: 20, min: 8 }
     },
     globalMinTotal: 80,
-    storageKey: 'deck_builder_state'
+    storageKey: 'deck_builder_state',
+    CHRYSALIS_HEX_NAME: 'Random Chrysalis Hex'
 };
 
 let appState = {
@@ -27,16 +28,27 @@ let currentBuild = {
 
 let buildMode = false;
 let endlessMode = false;
+let chrysalisBonusActive = false;
 
 const elements = {};
 let categoryData = {};
 
 function getGiftSlotCount() {
-    return endlessMode ? 18 : 6;
+    const baseSlots = endlessMode ? 18 : 6;
+    const bonusSlots = chrysalisBonusActive && hasChrysalis() ? 6 : 0;
+    return baseSlots + bonusSlots;
 }
 
 function getHexSlotCount() {
     return endlessMode ? 5 : 1;
+}
+
+function hasChrysalis() {
+    return currentBuild.hexes.some(hex => hex && hex.name === CONFIG.CHRYSALIS_HEX_NAME);
+}
+
+function getChrysalisBonusAvailable() {
+    return hasChrysalis();
 }
 
 function getUsedItemKeys() {
@@ -56,9 +68,9 @@ function getUsedItemKeys() {
 function addItemToBuild(item) {
     if (!item) return;
     if (getUsedItemKeys().has(item.key)) return;
-    
+
     let added = false;
-    
+
     if (item.category === 'weapons') {
         for (let i = 0; i < currentBuild.weapons.length; i++) {
             if (currentBuild.weapons[i] === null) {
@@ -105,16 +117,22 @@ function addItemToBuild(item) {
             added = true;
         }
     }
-    
+
     if (added) {
         renderBuildSlots();
         updateDeckSummary();
+
+        if (item.name === CONFIG.CHRYSALIS_HEX_NAME) {
+            rebuildBuildSection();
+        }
     }
 }
 
+
 function removeFromBuildIfPresent(category, itemKey) {
     let removed = false;
-    
+    let wasChrysalis = false;
+
     if (category === 'weapons') {
         const idx = currentBuild.weapons.findIndex(w => w && w.key === itemKey);
         if (idx >= 0) { currentBuild.weapons[idx] = null; removed = true; }
@@ -129,14 +147,24 @@ function removeFromBuildIfPresent(category, itemKey) {
         if (idx >= 0) { currentBuild.gifts[idx] = null; removed = true; }
     } else if (category === 'hexes') {
         const idx = currentBuild.hexes.findIndex(h => h && h.key === itemKey);
-        if (idx >= 0) { currentBuild.hexes[idx] = null; removed = true; }
+        if (idx >= 0) {
+            wasChrysalis = currentBuild.hexes[idx]?.name === CONFIG.CHRYSALIS_HEX_NAME;
+            currentBuild.hexes[idx] = null;
+            removed = true;
+        }
     } else if (currentBuild.backpack && currentBuild.backpack.key === itemKey) {
+        wasChrysalis = currentBuild.backpack.name === CONFIG.CHRYSALIS_HEX_NAME;
         currentBuild.backpack = null;
         removed = true;
     }
-    
+
     if (removed) {
         renderBuildSlots();
+
+        if (wasChrysalis) {
+            chrysalisBonusActive = false;
+            rebuildBuildSection(true);
+        }
     }
 }
 
@@ -188,7 +216,14 @@ function removeFromBuildBySlot(type, index) {
                 appState.selected[item.category].add(item.key);
                 const card = document.querySelector(`#grid-${item.category} [data-key="${item.key}"]`);
                 if (card) card.classList.add('selected');
+
+                const wasChrysalis = item.name === CONFIG.CHRYSALIS_HEX_NAME;
                 currentBuild.hexes[index] = null;
+
+                if (wasChrysalis) {
+                    chrysalisBonusActive = false;
+                    rebuildBuildSection(true);
+                }
             }
         }
     } else if (type === 'backpack') {
@@ -196,10 +231,17 @@ function removeFromBuildBySlot(type, index) {
             appState.selected[currentBuild.backpack.category].add(currentBuild.backpack.key);
             const card = document.querySelector(`#grid-${currentBuild.backpack.category} [data-key="${currentBuild.backpack.key}"]`);
             if (card) card.classList.add('selected');
+
+            const wasChrysalis = currentBuild.backpack.name === CONFIG.CHRYSALIS_HEX_NAME;
             currentBuild.backpack = null;
+
+            if (wasChrysalis) {
+                chrysalisBonusActive = false;
+                rebuildBuildSection(true);
+            }
         }
     }
-    
+
     renderBuildSlots();
     updateDeckSummary();
 }
@@ -595,10 +637,18 @@ function renderDeckGrid(items) {
     });
 }
 
-// Helper to generate HTML for build section
+function getRowsForGifts() {
+    const totalGifts = getGiftSlotCount();
+    return Math.ceil(totalGifts / 6);
+}
+
 function buildBuildSectionHTML() {
     const hexCount = getHexSlotCount();
     const giftCount = getGiftSlotCount();
+    const giftRows = Math.ceil(giftCount / 6);
+    const bonusAvailable = getChrysalisBonusAvailable();
+    const bonusChecked = chrysalisBonusActive && bonusAvailable;
+    const bonusDisabled = !bonusAvailable;
     
     let hexSlotsHTML = '';
     for (let i = 0; i < hexCount; i++) {
@@ -619,6 +669,10 @@ function buildBuildSectionHTML() {
             <label class="endless-toggle">
                 <input type="checkbox" id="endless-checkbox" ${endlessMode ? 'checked' : ''}>
                 <span class="endless-label">Endless</span>
+            </label>
+            <label class="chrysalis-bonus" title="${bonusAvailable ? 'Enable +6 gift slots from Random Chrysalis Hex' : 'Add Random Chrysalis Hex to enable'}">
+                <input type="checkbox" id="chrysalis-bonus-checkbox" ${bonusChecked ? 'checked' : ''} ${bonusDisabled ? 'disabled' : ''}>
+                <span class="bonus-label">${bonusAvailable ? '+6 Gifts' : 'No Chrysalis'}</span>
             </label>
         </div>
         <div class="build-slots-wrapper">
@@ -659,8 +713,8 @@ function buildBuildSectionHTML() {
                 </div>
                 <div class="build-box-right">
                     <div class="build-category-group" id="group-gifts">
-                        <div class="build-category-title">Gifts</div>
-                        <div class="build-category" id="build-gifts">
+                        <div class="build-category-title">Gifts (${giftRows} row${giftRows > 1 ? 's' : ''})</div>
+                        <div class="build-category" id="build-gifts" data-rows="${giftRows}">
                             ${giftSlotsHTML}
                         </div>
                     </div>
@@ -674,26 +728,32 @@ function initBuildSection() {
     const buildSection = document.createElement('div');
     buildSection.id = 'current-build-section';
     buildSection.className = 'build-collapsed' + (endlessMode ? ' build-endless' : '');
-    
+
     buildSection.innerHTML = buildBuildSectionHTML();
-    
+
     document.body.appendChild(buildSection);
-    
+
     document.getElementById('build-toggle-btn').addEventListener('click', toggleBuildSection);
     document.getElementById('endless-checkbox').addEventListener('change', toggleEndlessMode);
+
+    document.getElementById('chrysalis-bonus-checkbox')?.addEventListener('change', (e) => {
+        chrysalisBonusActive = e.target.checked;
+        
+        saveToStorage();
+        rebuildBuildSection(true);
+        
+        document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
+        
+        const newSection = document.getElementById('current-build-section');
+        if (newSection && newSection.classList.contains('build-expanded')) {
+            updateDeckSummary();
+        }
+    });
 }
 
-function getTotalSlots() {
-    return 2 + 2 + 1 + 1 + getHexSlotCount() + getGiftSlotCount();
-}
-
-function toggleEndlessMode(e) {
-    endlessMode = e.target.checked;
-
+function rebuildBuildSection(preserveExpansion = true) {
     const oldSection = document.getElementById('current-build-section');
-    const wasExpanded = oldSection && oldSection.classList.contains('build-expanded');
-
-    saveToStorage();
+    const wasExpanded = preserveExpansion && oldSection && oldSection.classList.contains('build-expanded');
 
     if (oldSection) {
         oldSection.remove();
@@ -702,6 +762,38 @@ function toggleEndlessMode(e) {
     initBuildSection();
     renderBuildSlots();
 
+    if (wasExpanded) {
+        const newSection = document.getElementById('current-build-section');
+        if (newSection) {
+            newSection.classList.remove('build-collapsed');
+            newSection.classList.add('build-expanded');
+            const arrow = newSection.querySelector('.build-arrow');
+            if (arrow) arrow.textContent = '▲';
+        }
+    }
+
+    document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
+}
+
+function getTotalSlots() {
+    return 2 + 2 + 1 + 1 + getHexSlotCount() + getGiftSlotCount();
+}
+
+function toggleEndlessMode(e) {
+    endlessMode = e.target.checked;
+    
+    const oldSection = document.getElementById('current-build-section');
+    const wasExpanded = oldSection && oldSection.classList.contains('build-expanded');
+    
+    saveToStorage();
+    
+    if (oldSection) {
+        oldSection.remove();
+    }
+    
+    initBuildSection();
+    renderBuildSlots();
+    
     const newSection = document.getElementById('current-build-section');
     if (wasExpanded && newSection) {
         newSection.classList.remove('build-collapsed');
@@ -709,9 +801,9 @@ function toggleEndlessMode(e) {
         const arrow = newSection.querySelector('.build-arrow');
         if (arrow) arrow.textContent = '▲';
     }
-
+    
     document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
-
+    
     if (newSection && newSection.classList.contains('build-expanded')) {
         updateDeckSummary();
     }

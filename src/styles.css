@@ -760,3 +760,96 @@ main {
         gap: 0.2rem;
     }
 }
+
+/* === CHRYSALIS BONUS INDICATOR === */
+
+.chrysalis-bonus {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: all 0.15s;
+}
+
+.chrysalis-bonus:hover:not(.disabled) {
+    background: #eaeaea;
+    border-color: #bbb;
+}
+
+.chrysalis-bonus.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f0f0f0;
+}
+
+.chrysalis-bonus.disabled .bonus-label {
+    color: #999;
+}
+
+.chrysalis-bonus input[type="checkbox"]:disabled {
+    accent-color: #999;
+    cursor: not-allowed;
+}
+
+.chrysalis-bonus input[type="checkbox"]:checked {
+    accent-color: #10b981;
+}
+
+.chrysalis-bonus.enabled {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: #10b981;
+}
+
+.bonus-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #666;
+    transition: color 0.15s;
+}
+
+.chrysalis-bonus.enabled .bonus-label {
+    color: #059669;
+}
+
+/* Gift grid rows based on data-rows attribute */
+#current-build-section:not(.build-endless) #build-gifts[data-rows="2"] {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    grid-template-rows: repeat(2, auto);
+    gap: 0.35rem;
+}
+
+#current-build-section.build-endless #build-gifts[data-rows="4"] {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    grid-template-rows: repeat(4, auto);
+    gap: 0.35rem;
+}
+
+/* Bonus gift slot styling (slots 7-12 or 19-24) */
+#build-gifts .build-slot.bonus-slot {
+    border-style: solid;
+    border-color: #a855f7;
+    background: linear-gradient(135deg, #f5f0ff 0%, #faf0ff 100%);
+}
+
+#build-gifts .build-slot.bonus-slot.filled {
+    border-color: #6d4aff;
+    background: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .chrysalis-bonus {
+        padding: 0.2rem 0.5rem;
+    }
+
+    .bonus-label {
+        font-size: 0.65rem;
+    }
+}
