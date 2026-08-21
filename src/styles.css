@@ -85,6 +85,16 @@ main {
     display: block;
 }
 
+.section-header {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6d4aff;
+    border-bottom: 1px solid #eee;
+    margin-top: 0.5rem;
+    padding: 0.75rem 0.5rem;
+    grid-column: 1 / -1;
+}
+
 .item-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
@@ -108,6 +118,72 @@ main {
 }
 
 .item-card {
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+}
+
+.item-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 0;
+    filter: grayscale();
+}
+
+.item-card[data-category="weapons"]::before {
+    background-image: url('../src/assets/IconFrameRed.png');
+}
+
+.item-card[data-category="trinkets"]::before,
+.item-card[data-category="magifishes"]::before {
+    background-image: url('../src/assets/IconFramePurple.png');
+}
+
+.item-card[data-category="gifts"]::before,
+.item-card[data-category="hexes"]::before {
+    background-image: url('../src/assets/IconFrameBlue.png');
+}
+
+.item-card.selected::before {
+    opacity: 1.0;
+    filter: none;
+}
+
+.item-card:hover {
+    border-color: #bbb;
+}
+
+.item-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-icon-wrapper img {
+    width: 108px;
+    height: 108px;
+    object-fit: scale-down;
+    transition: filter 0.15s;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 1));
+}
+
+.item-card:not(.selected) .item-icon-wrapper img {
+    filter: grayscale(100%) brightness(0.85);
+}
+
+/*.item-card {
     background: #fff;
     cursor: pointer;
     transition: all 0.15s;
@@ -142,7 +218,7 @@ main {
 
 .item-card:not(.selected) .item-icon-wrapper img {
     filter: grayscale(100%) brightness(0.85);
-}
+}*/
 
 /* Hide item-info completely */
 .item-info {

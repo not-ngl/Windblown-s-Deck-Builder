@@ -202,29 +202,59 @@ function renderAllTabs() {
 function renderTab(category) {
     const panel = document.getElementById(category);
     if (!panel) return;
-    
+
     panel.innerHTML = '';
-    
+
     const config = CONFIG.categories[category];
     const items = categoryData[category] || [];
-    
+
     const searchBox = document.createElement('div');
     searchBox.className = 'search-box';
     searchBox.innerHTML = `<input type="text" placeholder="Search..." id="search-${category}">`;
     panel.appendChild(searchBox);
-    
+
     setTimeout(() => {
         document.getElementById(`search-${category}`)?.addEventListener('input', (e) => filterItems(category, e.target.value));
     }, 0);
-    
+
     const grid = document.createElement('div');
     grid.className = 'item-grid';
     grid.id = `grid-${category}`;
-    
-    items.forEach(item => {
-        grid.appendChild(createCard(category, item));
-    });
-    
+
+    // Group items by Type for gifts
+    if (category === 'gifts') {
+        // Extract types and sort alphabetically with General first
+        const types = [...new Set(items.map(item => item.raw?.Type || 'Uncategorized'))];
+        types.sort((a, b) => {
+            if (a === 'General') return -1;
+            if (b === 'General') return 1;
+            return a.localeCompare(b);
+        });
+
+        types.forEach(type => {
+            // Add section header
+            const header = document.createElement('div');
+            header.className = 'section-header';
+            header.textContent = type;
+            grid.appendChild(header);
+
+            // Get items of this type and sort alphabetically by name
+            const typeItems = items
+                .filter(item => (item.raw?.Type || 'Uncategorized') === type)
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            typeItems.forEach(item => {
+                grid.appendChild(createCard(category, item));
+            });
+        });
+    } else {
+        // Original behavior for other categories
+        items.sort((a, b) => a.name.localeCompare(b.name));
+        items.forEach(item => {
+            grid.appendChild(createCard(category, item));
+        });
+    }
+
     panel.appendChild(grid);
 }
 
@@ -234,6 +264,7 @@ function createCard(category, item) {
     card.dataset.key = item.key;
     card.dataset.name = item.name.toLowerCase();
     card.dataset.desc = item.description.toLowerCase();
+    card.dataset.category = category;
 
     const iconWrap = document.createElement('div');
     iconWrap.className = 'item-icon-wrapper';
