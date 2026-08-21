@@ -124,6 +124,7 @@ function removeFromBuildIfPresent(category, itemKey) {
 
     if (removed) {
         renderBuildSlots();
+        updateDeckSummary();
 
         if (wasChrysalis) {
             chrysalisBonusActive = false;
@@ -238,4 +239,48 @@ function getTotalBuilt() {
 
 function getTotalSlots() {
     return 2 + 2 + 1 + 1 + getHexSlotCount() + getGiftSlotCount();
+}
+
+// === SPAWN ELIGIBILITY LOGIC ===
+
+function getProvidedEffects() {
+    const effects = new Set();
+
+    const categoriesToScan = ['weapons', 'trinkets', 'magifishes', 'gifts', 'hexes'];
+
+    categoriesToScan.forEach(cat => {
+        const items = currentBuild[cat];
+        if (!items) return;
+
+        items.forEach(item => {
+            if (!item) return;
+
+            if (item.deckOut) {
+                item.deckOut.forEach(effect => effects.add(effect));
+            }
+        });
+    });
+
+    return effects;
+}
+
+function isItemEligible(item) {
+    // no DeckIn
+    if (!item.deckIn || item.deckIn.length === 0) {
+        return { eligible: true, requiredEffects: [] };
+    }
+
+    const providedEffects = getProvidedEffects();
+
+    // required effect is provided (any?)
+    const satisfiedEffect = item.deckIn.find(effect => providedEffects.has(effect));
+
+    if (satisfiedEffect) {
+        return { eligible: true, requiredEffects: item.deckIn };
+    }
+
+    // what would be required?
+    const unsatisfied = item.deckIn.filter(effect => !providedEffects.has(effect));
+
+    return { eligible: false, requiredEffects: unsatisfied };
 }

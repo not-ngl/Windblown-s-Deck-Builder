@@ -35,8 +35,6 @@ function initBuildSection() {
         saveToStorage();
         rebuildBuildSection(true);
         
-        document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
-        
         const newSection = document.getElementById('current-build-section');
         if (newSection && newSection.classList.contains('build-expanded')) {
             updateDeckSummary();
@@ -191,16 +189,15 @@ function buildBuildSectionHTML() {
     return `
         <div class="build-header">
             <button id="build-toggle-btn" class="build-toggle-btn" aria-label="Toggle build section">
-                <span class="build-arrow">▼</span> Current Build
+                <span class="build-arrow">▲</span>Build Mode
             </button>
-            <span class="build-count" id="build-count">0/${getTotalSlots()}</span>
             <label class="endless-toggle">
                 <input type="checkbox" id="endless-checkbox" ${endlessMode ? 'checked' : ''}>
                 <span class="endless-label">Endless</span>
             </label>
             <label class="chrysalis-bonus" title="${bonusAvailable ? 'Enable +6 gift slots from Random Chrysalis Hex' : 'Add Random Chrysalis Hex to enable'}">
                 <input type="checkbox" id="chrysalis-bonus-checkbox" ${bonusChecked ? 'checked' : ''} ${bonusDisabled ? 'disabled' : ''}>
-                <span class="bonus-label">${bonusAvailable ? '+6 Gifts' : 'No Chrysalis'}</span>
+                <span class="bonus-label">Gain 6 Gifts?</span>
             </label>
         </div>
         ${endlessMode ? buildBuildSectionEndlessHTML() : buildBuildSectionNormalHTML()}
@@ -224,15 +221,15 @@ function rebuildBuildSection(preserveExpansion = true) {
             newSection.classList.remove('build-collapsed');
             newSection.classList.add('build-expanded');
             const arrow = newSection.querySelector('.build-arrow');
-            if (arrow) arrow.textContent = '▲';
+            if (arrow) arrow.textContent = '▼';
         }
     }
-
-    document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
 }
 
 function toggleEndlessMode(e) {
     endlessMode = e.target.checked;
+
+    document.body.classList.toggle('endless-mode-active', endlessMode);
     
     const oldSection = document.getElementById('current-build-section');
     const wasExpanded = oldSection && oldSection.classList.contains('build-expanded');
@@ -251,10 +248,8 @@ function toggleEndlessMode(e) {
         newSection.classList.remove('build-collapsed');
         newSection.classList.add('build-expanded');
         const arrow = newSection.querySelector('.build-arrow');
-        if (arrow) arrow.textContent = '▲';
+        if (arrow) arrow.textContent = '▼';
     }
-    
-    document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
     
     if (newSection && newSection.classList.contains('build-expanded')) {
         updateDeckSummary();
@@ -271,11 +266,11 @@ function toggleBuildSection() {
     if (isCollapsed) {
         section.classList.remove('build-collapsed');
         section.classList.add('build-expanded');
-        arrow.textContent = '▲';
+        arrow.textContent = '▼';
     } else {
         section.classList.add('build-collapsed');
         section.classList.remove('build-expanded');
-        arrow.textContent = '▼';
+        arrow.textContent = '▲';
     }
 }
 

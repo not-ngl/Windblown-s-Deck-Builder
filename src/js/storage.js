@@ -23,6 +23,7 @@ function loadFromStorage() {
         if (state.currentTab) appState.currentTab = state.currentTab;
         if (typeof state.endless === 'boolean') {
             endlessMode = state.endless;
+            document.body.classList.toggle('endless-mode-active', endlessMode);
         }
         renderAllTabs();
         updateDeckSummary();

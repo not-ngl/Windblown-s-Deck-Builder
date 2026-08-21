@@ -90,6 +90,22 @@ function createCard(category, item) {
         tooltip.appendChild(tooltipDesc);
         iconWrap.appendChild(tooltip);
 
+        // Smooth cursor-follow positioning
+        iconWrap.addEventListener('mousemove', (e) => {
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY - tooltip.offsetHeight / 2) + 'px';
+        });
+
+        iconWrap.addEventListener('mouseenter', () => {
+            tooltip.style.visibility = 'visible';
+            tooltip.style.opacity = '1';
+        });
+
+        iconWrap.addEventListener('mouseleave', () => {
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '0';
+        });
+
         iconWrap.appendChild(img);
     }
 
@@ -158,24 +174,37 @@ function updateDeckSummary() {
     elements.globalTotal.className = total >= CONFIG.globalMinTotal ? 'global-total valid' : 'global-total error';
 
     renderDeckGrid(selectedItemList);
+
+    // Re-check eligibility 
+    checkAllDeckEligibility();
 }
 
 function renderDeckGrid(items) {
     elements.deckGrid.innerHTML = '';
-    
+
     if (items.length === 0) {
         elements.deckGrid.innerHTML = '<div style="grid-column:1/-1;padding:1rem;color:#999;text-align:center;font-size:0.75rem;">No items selected</div>';
         return;
     }
-    
+
     const LONG_PRESS_DELAY = 500;
-    
+
     items.forEach(item => {
+        // Check eligibility
+        let isIneligible = false;
+        let requirementHint = [];
+
+        if ((item.category === 'gifts' || item.category === 'hexes')) {
+            const eligibility = isItemEligible(item);
+            isIneligible = !eligibility.eligible;
+            requirementHint = eligibility.requiredEffects;
+        }
+
         const deckItem = document.createElement('div');
-        deckItem.className = 'deck-item';
+        deckItem.className = 'deck-item' + (isIneligible ? ' ineligible' : '');
         deckItem.dataset.key = item.key;
         deckItem.dataset.category = item.category;
-        
+
         if (item.imageUrl) {
             const img = document.createElement('img');
             img.src = item.imageUrl;
@@ -183,19 +212,20 @@ function renderDeckGrid(items) {
             img.title = item.name;
             deckItem.appendChild(img);
         }
-        
-        deckItem.title = item.name;
-        
+
+        // requirement hint for tooltip
+        deckItem.dataset.requirementHint = requirementHint.join(', ');
+
         let longPressTimer = null;
         let isLongPress = false;
-        
+
         const handleStart = (e) => {
             if (!buildMode) return;
             isLongPress = false;
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
                 if (getUsedItemKeys().has(item.key)) return;
-                
+
                 if (currentBuild.backpack === null) {
                     currentBuild.backpack = item;
                     renderBuildSlots();
@@ -205,20 +235,20 @@ function renderDeckGrid(items) {
                 }
             }, LONG_PRESS_DELAY);
         };
-        
+
         const handleEnd = (e) => {
             if (longPressTimer) {
                 clearTimeout(longPressTimer);
                 longPressTimer = null;
             }
-            
+
             if (!isLongPress && buildMode) {
                 addItemToBuild(item);
             } else if (!isLongPress && !buildMode) {
                 removeFromDeck(item.category, item.key);
             }
         };
-        
+
         deckItem.addEventListener('mousedown', handleStart);
         deckItem.addEventListener('mouseup', handleEnd);
         deckItem.addEventListener('mouseleave', () => {
@@ -227,22 +257,22 @@ function renderDeckGrid(items) {
                 longPressTimer = null;
             }
         });
-        
+
         deckItem.addEventListener('touchstart', (e) => {
             handleStart(e);
         }, { passive: true });
-        
+
         deckItem.addEventListener('touchend', (e) => {
             handleEnd(e);
         }, { passive: true });
-        
+
         deckItem.addEventListener('touchmove', () => {
             if (longPressTimer) {
                 clearTimeout(longPressTimer);
                 longPressTimer = null;
             }
         }, { passive: true });
-        
+
         elements.deckGrid.appendChild(deckItem);
     });
 }
@@ -268,8 +298,6 @@ function renderBuildSlots() {
     renderSingleSlot('build-backpack', currentBuild.backpack, 'backpack');
     renderSlotGroup('build-hexes', currentBuild.hexes, 'hex');
     renderSlotGroup('build-gifts', currentBuild.gifts, 'gift');
-    
-    document.getElementById('build-count').textContent = `${getTotalBuilt()}/${getTotalSlots()}`;
 }
 
 function renderSlotGroup(containerId, items, slotType) {
@@ -292,9 +320,7 @@ function renderSlotGroup(containerId, items, slotType) {
         if (item && item.imageUrl) {
             slot.classList.add('filled');
 
-            // Special handling for backpack: overlay item on front icon
             if (slotType === 'backpack') {
-                // Create item image with lower z-index than the ::after pseudo-element
                 const img = document.createElement('img');
                 img.src = item.imageUrl;
                 img.alt = item.name;
@@ -302,10 +328,8 @@ function renderSlotGroup(containerId, items, slotType) {
                 img.style.zIndex = '2';
                 slot.appendChild(img);
 
-                // Reduce opacity of front icon when filled
                 slot.style.setProperty('--front-opacity', '0.7');
             } else {
-                // Regular slot with just item image
                 const img = document.createElement('img');
                 img.src = item.imageUrl;
                 img.alt = item.name;
@@ -330,7 +354,6 @@ function renderSlotGroup(containerId, items, slotType) {
         } else {
             slot.onclick = null;
 
-            // Reset backpack state when empty
             if (slotType === 'backpack') {
                 slot.style.setProperty('--front-opacity', '1');
             }
@@ -345,7 +368,6 @@ function renderSingleSlot(containerId, item, slotType) {
     const slot = container.querySelector('.build-slot');
     const index = parseInt(slot.dataset.index);
 
-    // Clear previous content
     const existingImg = slot.querySelector('img:not([class*="icon"])');
     if (existingImg) existingImg.remove();
     const removeBtn = slot.querySelector('.remove-slot-btn');
@@ -355,7 +377,6 @@ function renderSingleSlot(containerId, item, slotType) {
     if (item && item.imageUrl) {
         slot.classList.add('filled');
 
-        // Special handling for backpack: overlay item on front icon
         if (slotType === 'backpack') {
             const img = document.createElement('img');
             img.src = item.imageUrl;
@@ -389,7 +410,6 @@ function renderSingleSlot(containerId, item, slotType) {
     } else {
         slot.onclick = null;
 
-        // Reset backpack state when empty
         if (slotType === 'backpack') {
             slot.style.setProperty('--front-opacity', '1');
         }
@@ -426,3 +446,32 @@ function toggleItem(category, itemKey) {
     
     updateDeckSummary();
 }
+
+function checkAllDeckEligibility() {
+    const deckItems = elements.deckGrid.querySelectorAll('.deck-item');
+
+    deckItems.forEach(deckItem => {
+        const key = deckItem.dataset.key;
+        const category = deckItem.dataset.category;
+
+        const item = categoryData[category]?.find(i => i.key === key);
+        if (!item) return;
+
+        if (category !== 'gifts' && category !== 'hexes') return;
+
+        const eligibility = isItemEligible(item);
+        const isIneligible = !eligibility.eligible;
+
+        deckItem.classList.toggle('ineligible', isIneligible);
+
+        if (isIneligible) {
+            const hint = eligibility.requiredEffects.join(', ');
+            deckItem.dataset.requirementHint = hint;
+            deckItem.title = `${item.name}\nRequires: ${hint}`;
+        } else {
+            delete deckItem.dataset.requirementHint;
+            deckItem.title = item.name;
+        }
+    });
+}
+

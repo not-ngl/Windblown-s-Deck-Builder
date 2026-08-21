@@ -6,15 +6,34 @@ async function loadData() {
             const name = cat.charAt(0).toUpperCase() + cat.slice(1);
             const data = json[name];
             
-            categoryData[cat] = Object.entries(data || {}).map(([key, item]) => ({
-                key,
-                name: item.Name || key,
-                description: item.Description ? cleanWikiText(item.Description) : '',
-                imageUrl: item.Image 
-                    ? `${CONFIG.gameWikiBase}/images/${item.Image.replace(/ /g, '_')}?format=original` 
-                    : null,
-                raw: item
-            })).filter(item => !(item.raw.RemovedIn && item.raw.RemovedIn !== null));
+            categoryData[cat] = Object.entries(data || {}).map(([key, item]) => {
+                const deckOutRaw = item.DeckOut;
+                let deckOut = [];
+                
+                // Parse DeckOut if it exists 
+                if (deckOutRaw && deckOutRaw.__array) {
+                    deckOut = [...deckOutRaw.__array];
+                }
+                
+                // augment DeckOut for Trinkets/Magifishes
+                if (cat === 'trinkets' && !deckOut.includes('Trinket')) {
+                    deckOut.push('Trinket');
+                } else if (cat === 'magifishes' && !deckOut.includes('Magifish')) {
+                    deckOut.push('Magifish');
+                }
+                
+                return {
+                    key,
+                    name: item.Name || key,
+                    description: item.Description ? cleanWikiText(item.Description) : '',
+                    imageUrl: item.Image 
+                        ? `${CONFIG.gameWikiBase}/images/${item.Image.replace(/ /g, '_')}?format=original` 
+                        : null,
+                    raw: item,
+                    deckIn: item.DeckIn?.__array || [],  // Empty array if missing
+                    deckOut: deckOut  // Augmented array
+                };
+            }).filter(item => !(item.raw.RemovedIn && item.raw.RemovedIn !== null));
         });
         await Promise.all(promises);
     } catch (err) {
