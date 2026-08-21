@@ -5,12 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deck Builder</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 </head>
 <body>
-    <header>
-        <h1>Deck Builder</h1>
-    </header>
+    <div class="fixed-header">
+    <div class="logo-container">
+      <img src="./assets/wdb-logo.png" alt="Windblown's deck builder" style="height:40px; margin-top:6px" />
+    </div>
 
+    <!--<div class="lang-toggle">
+      <button id="langToggleBtn" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Switch language">
+        <span id="langLabel" class="lang-label">EN</span>
+        <span class="dropdown-arrow">▼</span>
+      </button>
+      <div id="langDropdown" class="lang-dropdown" role="listbox" hidden>
+        <button type="button" class="lang-option" data-lang="en" role="option" aria-selected="true">English</button>
+        <button type="button" class="lang-option" data-lang="fr" role="option" aria-selected="false">Français</button>
+      </div>
+    </div>
+
+    <div class="theme-toggle">
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle theme">
+        <span class="theme-label">Switch to Light</span>
+      </button>
+    </div>-->
+  </div>
     <main>
         <section class="categories-container">
             <nav id="tabs-wrapper" class="tabs-wrapper">
@@ -44,7 +63,6 @@
         </section>
 
         <aside id="deck-summary">
-            <h2>Generated Deck</h2>
             <div id="deck-grid" class="deck-grid"></div>
             <div id="global-total" class="global-total">0/80 minimum</div>
 
@@ -54,6 +72,10 @@
                 <button id="btn-reset">Reset</button>
                 <input type="file" id="import-file" accept=".json" hidden>
             </div>
+
+	    <p class="copyright-notice sidebar-copyright">
+	        © Motion Twin • Icons & data from <a href="https://windblown.wiki.gg/" target="_blank" rel="noopener">Windblown Wiki</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>) • by ngl
+	    </p>
         </aside>
     </main>
 

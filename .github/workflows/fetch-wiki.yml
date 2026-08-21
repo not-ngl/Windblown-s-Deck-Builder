@@ -1,0 +1,22 @@
+name: Fetch Wiki Data
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'  # Sunday at 6 UTC
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: node scripts/fetch-wiki-data.js
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[weekly] Auto-update wiki data"
+          file_pattern: "data/*.json"
