@@ -3,7 +3,7 @@
 A web-based deck builder tool for the game Windblown. Plan, validate, and export your builds with real-time eligibility checking and slot visualization.
 
 ## Live Demo
-[Just here](https://not-ngl.github.io/windblown-deck-builder/).
+[Just here](https://not-ngl.github.io/Windblown-s-Deck-Builder/).
 
 ## Features
 ### Core Functionality
