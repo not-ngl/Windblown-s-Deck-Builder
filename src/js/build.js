@@ -17,12 +17,34 @@ function getChrysalisBonusAvailable() {
 }
 
 function generateFreshFileDeck() {
+    endlessMode = false;
+    document.body.classList.toggle('endless-mode-active', false);
+    const endlessCheckbox = document.getElementById('endless-checkbox');
+    if (endlessCheckbox) endlessCheckbox.checked = false;
+
+    currentBuild = {
+        weapons: [null, null],
+        trinkets: [null, null],
+        magifishes: [null],
+        backpack: null,
+        gifts: Array(getGiftSlotCount()).fill(null),
+        hexes: Array(getHexSlotCount()).fill(null)
+    };
+
+    if (chrysalisBonusActive) {
+        chrysalisBonusActive = false;
+    }
+
+    const oldSection = document.getElementById('current-build-section');
+    if (oldSection) {
+        oldSection.remove();
+    }
+    initBuildSection();
+
     Object.keys(appState.selected).forEach(c => appState.selected[c] = new Set());
 
     ['weapons', 'trinkets', 'magifishes', 'gifts'].forEach(cat => {
-        const visibleItems = getVisibleItems(cat);
-
-        visibleItems.forEach(item => {
+        getVisibleItems(cat).forEach(item => {
             const req = item.raw?.Requirements;
             if (!req || req === 'Unlocked by default' || req === '') {
                 appState.selected[cat].add(item.key);
@@ -32,6 +54,7 @@ function generateFreshFileDeck() {
 
     renderAllTabs();
     updateDeckSummary();
+    renderBuildSlots();
     saveToStorage();
 }
 
