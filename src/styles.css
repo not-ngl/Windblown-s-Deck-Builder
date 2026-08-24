@@ -15,9 +15,11 @@
     --theme-accent: #cc33ba;
     --theme-accent-hover: #f544e6;
     --theme-accent-label: #fff;
+    --fresh-file-border: #fd801c;
     
     /* RGB for rgba() usage */
     --theme-content-bg-rgb: 11, 11, 40;
+    --fresh-file-bg-rgb: 253, 128, 28;
     
     /* Backgrounds */
     --wiki-body-background-image: url("https://windblown.wiki.gg/images/Site-background-3.jpg?51ba32");
@@ -854,6 +856,15 @@ body:not(.endless-mode-active) {
     background: #a00;
 }
 
+#btn-fresh-file {
+    border-color: var(--fresh-file-border);
+    color: #fd801c;
+}
+
+#btn-fresh-file:hover {
+    background: rgba(var(--fresh-file-bg-rgb), 0.25);
+}
+
 .sidebar-copyright {
     font-size: 8pt;
     opacity: 0.8;
@@ -867,7 +878,7 @@ body:not(.endless-mode-active) {
     color: var(--theme-content-link);
 }
 
-/* === MEDIA QUERIES (CONSOLIDATED) === */
+/* === MEDIA QUERIES === */
 
 /* Tablet view */
 @media (max-width: 1360px) {
@@ -880,6 +891,7 @@ body:not(.endless-mode-active) {
         order: -1;
     }
 }
+
 
 /* Mobile view */
 @media (max-width: 900px) {

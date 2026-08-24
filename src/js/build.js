@@ -16,6 +16,23 @@ function getChrysalisBonusAvailable() {
     return hasChrysalis();
 }
 
+function generateFreshFileDeck() {
+    Object.keys(appState.selected).forEach(c => appState.selected[c] = new Set());
+
+    ['weapons', 'trinkets', 'magifishes', 'gifts'].forEach(cat => {
+        categoryData[cat]?.forEach(item => {
+            const req = item.raw?.Requirements;
+            if (!req || req === 'Unlocked by default' || req === '') {
+                appState.selected[cat].add(item.key);
+            }
+        });
+    });
+
+    renderAllTabs();
+    updateDeckSummary();
+    saveToStorage();
+}
+
 function getUsedItemKeys() {
     const keys = new Set();
     Object.keys(currentBuild).forEach(cat => {

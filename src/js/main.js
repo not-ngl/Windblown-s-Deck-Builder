@@ -4,6 +4,7 @@ function setupElements() {
     elements.btnReset = document.getElementById('btn-reset');
     elements.btnExport = document.getElementById('btn-export');
     elements.btnImport = document.getElementById('btn-import');
+    elements.btnFreshFile = document.getElementById('btn-fresh-file')
     elements.importFile = document.getElementById('import-file');
     elements.deckGrid = document.getElementById('deck-grid');
     elements.globalTotal = document.getElementById('global-total');
@@ -281,7 +282,8 @@ function setupEventListeners() {
     elements.btnReset?.addEventListener('click', resetAll);
     elements.btnExport?.addEventListener('click', exportDeck);
     elements.btnImport?.addEventListener('click', () => elements.importFile.click());
-    elements.importFile?.addEventListener('change', importDeck);
+    elements.btnFreshFile?.addEventListener('click', generateFreshFileDeck);
+    elements.importFile?.addEventListener('change', importDeck); 
 }
 
 async function init() {
