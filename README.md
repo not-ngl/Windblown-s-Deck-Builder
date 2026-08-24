@@ -64,8 +64,8 @@ CSS variables and theme design copy-pasted from [Windblown Wiki Common.css](http
 ### Building a Deck
 1. Click items in the category panels to select them for your deck
 2. Toggle **Build Mode** to move items from deck to build slots
-3. Use **long-press** in build mode for quick backpack assignment
-4. Watch eligibility indicators (grayed out = cannot spawn with the current build)
+3. Use **long-press** in build mode for backpack assignment
+4. Watch eligibility indicators: grayed out = cannot spawn with the current build (be careful the tool does not account for affixes!)
 
 ### Exporting
 Click **Export** to download your deck as JSON. Share the file with others who can **Import** it to load your build.
