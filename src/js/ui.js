@@ -9,7 +9,7 @@ function renderTab(category) {
     panel.innerHTML = '';
 
     const config = CONFIG.categories[category];
-    const items = categoryData[category] || [];
+    const items = getVisibleItems(category);
 
     const searchBox = document.createElement('div');
     searchBox.className = 'search-box';

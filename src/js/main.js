@@ -294,6 +294,7 @@ async function init() {
     
     setupElements();
     await loadData();
+    setupVersionSelector();
     setupEventListeners();
     renderAllTabs();
     updateDeckSummary();

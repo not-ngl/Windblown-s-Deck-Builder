@@ -1,6 +1,7 @@
 let appState = {
     selected: {},
-    currentTab: null
+    currentTab: null,
+    selectedVersion: null
 };
 
 let currentBuild = {
@@ -18,3 +19,4 @@ let chrysalisBonusActive = false;
 
 const elements = {};
 let categoryData = {};
+let availableVersionsList = [];

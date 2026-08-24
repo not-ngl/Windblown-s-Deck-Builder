@@ -2,7 +2,8 @@ function saveToStorage() {
     const state = {
         selected: {},
         currentTab: appState.currentTab,
-        endless: endlessMode
+        endless: endlessMode,
+        selectedVersion: appState.selectedVersion
     };
     Object.keys(appState.selected).forEach(c => {
         state.selected[c] = Array.from(appState.selected[c]);
@@ -25,6 +26,8 @@ function loadFromStorage() {
             endlessMode = state.endless;
             document.body.classList.toggle('endless-mode-active', endlessMode);
         }
+        appState.selectedVersion = state.selectedVersion;
+        selectedVersionParsed = parseVersion(state.selectedVersion);
         renderAllTabs();
         updateDeckSummary();
         if (elements.tabs) switchTab(appState.currentTab);
@@ -57,6 +60,7 @@ function exportDeck() {
     
     const data = {
         version: 2,
+        gameVersion: appState.selectedVersion,
         timestamp: new Date().toISOString(),
         endless: endlessMode,
         deck: {},
@@ -95,6 +99,11 @@ function importDeck(e) {
                     data.deck[c].forEach(k => appState.selected[c].add(k));
                 }
             });
+
+            appState.selectedVersion = data.gameVersion;
+            selectedVersionParsed = parseVersion(data.gameVersion);
+            const select = document.getElementById('version-select');
+            if (select) select.value = data.gameVersion;
             
             if (typeof data.endless === 'boolean') {
                 endlessMode = data.endless;
@@ -125,6 +134,7 @@ function importDeck(e) {
             saveToStorage();
             renderAllTabs();
             updateDeckSummary();
+            checkAllDeckEligibility();
         } catch (err) {
             alert('Invalid file');
         }

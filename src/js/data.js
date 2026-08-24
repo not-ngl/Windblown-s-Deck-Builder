@@ -33,9 +33,12 @@ async function loadData() {
                     deckIn: item.DeckIn?.__array || [],  // Empty array if missing
                     deckOut: deckOut  // Augmented array
                 };
-            }).filter(item => !(item.raw.RemovedIn && item.raw.RemovedIn !== null));
+            }); //.filter(item => !(item.raw.RemovedIn && item.raw.RemovedIn !== null));
         });
         await Promise.all(promises);
+
+        availableVersionsList = deriveAvailableVersions();
+
     } catch (err) {
         console.error('Load failed:', err);
     }

@@ -8,11 +8,17 @@
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 </head>
 <body>
-    <div class="fixed-header">
+  <div class="fixed-header">
     <div class="logo-container">
       <img src="./assets/wdb-logo.png" alt="Windblown's deck builder" style="height:40px; margin-top:6px" />
     </div>
 
+    <div class="version-selector-container">
+      <div class="version-selector">
+        <select id="version-select" title="Select version. Note: Gear descriptions reflect the latest game version only, not version-specific.">
+        </select>
+      </div>
+    </div>
   </div>
     <main>
         <section class="categories-container">
@@ -70,6 +76,7 @@
     <script src="js/build.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/storage.js"></script>
+    <script src="js/version.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

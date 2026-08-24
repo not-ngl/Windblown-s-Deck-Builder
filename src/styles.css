@@ -77,6 +77,25 @@ main {
     text-align: center;
 }
 
+.version-selector {
+    margin-left: auto;
+    padding: 0.5rem;
+}
+
+#version-select {
+    background: var(--theme-content-background-secondary);
+    color: var(--theme-content-text);
+    border: 1px solid var(--theme-content-border);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+#version-select:focus {
+    outline: none;
+    border-color: var(--theme-accent);
+}
+
 /* === TABS === */
 .tabs-wrapper {
     display: flex;
