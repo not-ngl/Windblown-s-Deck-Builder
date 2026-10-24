@@ -1,7 +1,7 @@
 async function loadData() {
     try {
         const promises = Object.keys(CONFIG.categories).map(async (cat) => {
-            const res = await fetch(`../data/${cat}.json`);
+            const res = await fetch(`./data/${cat}.json`);
             const json = await res.json();
             const name = cat.charAt(0).toUpperCase() + cat.slice(1);
             const data = json[name];
