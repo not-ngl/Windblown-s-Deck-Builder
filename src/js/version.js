@@ -20,7 +20,7 @@ function setupVersionSelector() {
         select.value = appState.selectedVersion;
         selectedVersionParsed = parseVersion(appState.selectedVersion);
     }
-    
+    applyVersionConfig();
     select.addEventListener('change', handleVersionChange);
 }
 
@@ -30,7 +30,7 @@ function handleVersionChange(e) {
     
     appState.selectedVersion = newVersion;
     selectedVersionParsed = parseVersion(newVersion);
-    
+    applyVersionConfig(newVersion);
     saveToStorage();
     
     cleanUpUnavailableItems();
@@ -120,9 +120,17 @@ function compareVersions(v1, v2) {
 function isItemAvailable(item, selectedVersionParsed) {
     const addedIn = parseVersion(item.raw?.AddedIn);
     const removedIn = parseVersion(item.raw?.RemovedIn);
+    const addedBack = parseVersion(item.raw?.AddedBack);
 
     if (addedIn && compareVersions(addedIn, selectedVersionParsed) > 0) {
         return false;
+    }
+
+    if (removedIn && addedBack) {
+        const inGap = compareVersions(selectedVersionParsed, removedIn) >= 0
+                   && compareVersions(selectedVersionParsed, addedBack) < 0;
+        if (inGap) return false;
+        return compareVersions(selectedVersionParsed, addedBack) >= 0;
     }
 
     if (removedIn && compareVersions(removedIn, selectedVersionParsed) <= 0) {

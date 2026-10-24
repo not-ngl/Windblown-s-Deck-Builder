@@ -28,6 +28,7 @@ function loadFromStorage() {
         }
         appState.selectedVersion = state.selectedVersion;
         selectedVersionParsed = parseVersion(state.selectedVersion);
+        applyVersionConfig();
         renderAllTabs();
         updateDeckSummary();
         if (elements.tabs) switchTab(appState.currentTab);
@@ -102,6 +103,7 @@ function importDeck(e) {
 
             appState.selectedVersion = data.gameVersion;
             selectedVersionParsed = parseVersion(data.gameVersion);
+            applyVersionConfig(data.gameVersion);
             const select = document.getElementById('version-select');
             if (select) select.value = data.gameVersion;
             
