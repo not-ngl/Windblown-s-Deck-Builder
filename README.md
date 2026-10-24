@@ -14,7 +14,8 @@ A web-based deck builder tool for the game Windblown. Plan, validate, and export
 - **Random Chrysalis Hex**: +6 gift slots if equipped and checked with this bonus
 - **Import/Export**: Save and share decks via JSON files
 
-### Category Minimums
+### Category Minimums per versions!
+#### Version 0.10
 | Category | Total Available | Minimum Required |
 |----------|-----------------|------------------|
 | Weapons | 28 | 8 |
@@ -23,6 +24,16 @@ A web-based deck builder tool for the game Windblown. Plan, validate, and export
 | Gifts | 135 | 35 |
 | Hexes | 20 | 8 |
 | **Global Minimum** | **211** | **80** |
+
+#### Version 0.99
+| Category | Total Available | Minimum Required |
+|----------|-----------------|------------------|
+| Weapons | 28 | 15 |
+| Trinkets | 24 | 12 |
+| Magifishes | 4 | 2 |
+| Gifts | 136 | 50 |
+| Hexes | 20 | 10 |
+| **Global Minimum** | **212** | **110** |
 
 ### Slot Configuration
 | Mode | Hex Slots | Gift Slots |
