@@ -130,7 +130,7 @@ function isItemAvailable(item, selectedVersionParsed) {
         const inGap = compareVersions(selectedVersionParsed, removedIn) >= 0
                    && compareVersions(selectedVersionParsed, addedBack) < 0;
         if (inGap) return false;
-        return compareVersions(selectedVersionParsed, addedBack) >= 0;
+        return compareVersions(selectedVersionParsed, addedIn) >= 0;
     }
 
     if (removedIn && compareVersions(removedIn, selectedVersionParsed) <= 0) {
